@@ -125,6 +125,7 @@ class _SingleCharacterInputState extends State<SingleCharacterInput>
                     return MapEntry(
                       key,
                       TextField(
+                        enableInteractiveSelection: false,
                         focusNode: value,
                         controller: _mainController,
                         textCapitalization: TextCapitalization.characters,
@@ -209,6 +210,8 @@ class _SingleCharacterInputState extends State<SingleCharacterInput>
     if (_currentKeyboard != nextKeyboard) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _mainNodes[nextKeyboard]?.requestFocus();
+        _mainController.selection =
+            TextSelection.collapsed(offset: _currentIndex);
       });
       setState(() {
         _currentKeyboard = nextKeyboard;

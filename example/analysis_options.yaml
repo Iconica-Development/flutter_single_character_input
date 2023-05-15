@@ -206,9 +206,7 @@ linter:
     void_checks: true
     # pub rules
     depend_on_referenced_packages: true
-    lowercase_with_underscores: true
     secure_pubspec_urls: false
     sort_pub_dependencies: false
-
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

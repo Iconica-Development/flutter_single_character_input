@@ -17,9 +17,7 @@ class InputCharacter {
   final bool readOnly;
   final String hint;
 
-  String format(String value) {
-    return formatter?.call(value) ?? value;
-  }
+  String format(String value) => formatter?.call(value) ?? value;
 }
 
 typedef CharacterFormatter = String Function(String);

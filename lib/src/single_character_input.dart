@@ -19,8 +19,8 @@ class SingleCharacterInput extends StatefulWidget {
     this.inputDecoration,
     this.spacing = 0,
     this.textStyle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget Function(BuildContext context, List<Widget> inputs)?
       buildCustomInput;
@@ -30,6 +30,7 @@ class SingleCharacterInput extends StatefulWidget {
 
   /// Gets called when the value is changed.
   /// Passes the changed value and if all inputs are filled in.
+  // ignore: avoid_positional_boolean_parameters
   final void Function(String value, bool isComplete) onChanged;
 
   final InputDecoration? inputDecoration;
@@ -105,93 +106,91 @@ class _SingleCharacterInputState extends State<SingleCharacterInput>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _mainNodes[_currentKeyboard]?.unfocus();
-          _mainNodes[_currentKeyboard]?.requestFocus();
-        });
-        setState(() {});
-      },
-      child: Wrap(
-        direction: Axis.horizontal,
-        children: [
-          Offstage(
-            child: Column(
-              children: _mainNodes
-                  .map((key, value) {
-                    return MapEntry(
-                      key,
-                      TextField(
-                        enableInteractiveSelection: false,
-                        focusNode: value,
-                        controller: _mainController,
-                        textCapitalization: TextCapitalization.characters,
-                        keyboardType: key,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp('[a-zA-Z0-9]'),
-                          ),
-                          LengthLimitingTextInputFormatter(
-                            widget.characters.length,
-                          ),
-                        ],
-                        onChanged: (String value) {
-                          if (value.length > _currentIndex) {
-                            var result = widget.characters[_currentIndex]
-                                .format(value[_currentIndex]);
-                            if (value[_currentIndex] != result) {
-                              value = value.replaceRange(
-                                _currentIndex,
-                                _currentIndex + 1,
-                                result,
-                              );
-                              _mainController.value =
-                                  _mainController.value.copyWith(
-                                text: value,
-                                selection: TextSelection.collapsed(
-                                  offset: value.length,
-                                ),
-                              );
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _mainNodes[_currentKeyboard]?.unfocus();
+            _mainNodes[_currentKeyboard]?.requestFocus();
+          });
+          setState(() {});
+        },
+        child: Wrap(
+          direction: Axis.horizontal,
+          children: [
+            Offstage(
+              child: Column(
+                children: _mainNodes
+                    .map(
+                      (key, value) => MapEntry(
+                        key,
+                        TextField(
+                          enableInteractiveSelection: false,
+                          focusNode: value,
+                          controller: _mainController,
+                          textCapitalization: TextCapitalization.characters,
+                          keyboardType: key,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp('[a-zA-Z0-9]'),
+                            ),
+                            LengthLimitingTextInputFormatter(
+                              widget.characters.length,
+                            ),
+                          ],
+                          onChanged: (String value) {
+                            if (value.length > _currentIndex) {
+                              var result = widget.characters[_currentIndex]
+                                  .format(value[_currentIndex]);
+                              if (value[_currentIndex] != result) {
+                                value = value.replaceRange(
+                                  _currentIndex,
+                                  _currentIndex + 1,
+                                  result,
+                                );
+                                _mainController.value =
+                                    _mainController.value.copyWith(
+                                  text: value,
+                                  selection: TextSelection.collapsed(
+                                    offset: value.length,
+                                  ),
+                                );
+                              }
                             }
-                          }
-                          _onChanged(value);
-                        },
+                            _onChanged(value);
+                          },
+                        ),
                       ),
-                    );
-                  })
-                  .values
-                  .toList(),
+                    )
+                    .values
+                    .toList(),
+              ),
             ),
-          ),
-          if (widget.buildCustomInput != null) ...[
-            widget.buildCustomInput!.call(
-              context,
-              widget.characters
-                  .asMap()
-                  .map(
-                    (key, value) => MapEntry(key, _createCharacter(key)),
-                  )
-                  .values
-                  .toList(),
-            ),
-          ] else ...[
-            for (var i = 0; i < widget.characters.length; i++) ...[
-              _createCharacter(i),
-              if (i < widget.characters.length - 1 && widget.spacing > 0) ...[
-                SizedBox(
-                  height: widget.spacing,
-                  width: widget.spacing,
-                ),
-              ]
+            if (widget.buildCustomInput != null) ...[
+              widget.buildCustomInput!.call(
+                context,
+                widget.characters
+                    .asMap()
+                    .map(
+                      (key, value) => MapEntry(key, _createCharacter(key)),
+                    )
+                    .values
+                    .toList(),
+              ),
+            ] else ...[
+              for (var i = 0; i < widget.characters.length; i++) ...[
+                _createCharacter(i),
+                if (i < widget.characters.length - 1 && widget.spacing > 0) ...[
+                  SizedBox(
+                    height: widget.spacing,
+                    width: widget.spacing,
+                  ),
+                ],
+              ],
             ],
           ],
-        ],
-      ),
-    );
-  }
+        ),
+      );
 
   void _onChanged(String value) {
     widget.onChanged.call(value, value.length == widget.characters.length);
@@ -260,9 +259,7 @@ class _SingleCharacterInputState extends State<SingleCharacterInput>
     return '';
   }
 
-  bool _hasFocus() {
-    return _mainNodes.values.any((element) => element.hasFocus);
-  }
+  bool _hasFocus() => _mainNodes.values.any((element) => element.hasFocus);
 
   Widget _createLabel(int index) {
     if (index < _currentValue.length) {
@@ -271,19 +268,17 @@ class _SingleCharacterInputState extends State<SingleCharacterInput>
     if (index == _currentValue.length && _hasFocus()) {
       return AnimatedBuilder(
         animation: _cursorAnimation,
-        builder: (context, _) {
-          return Opacity(
-            opacity: _cursorAnimation.value,
-            child: Container(
-              alignment: _getAlignment(widget.cursorTextAlign),
-              child: Text(
-                '|',
-                style: widget.textStyle,
-                textAlign: widget.cursorTextAlign,
-              ),
+        builder: (context, _) => Opacity(
+          opacity: _cursorAnimation.value,
+          child: Container(
+            alignment: _getAlignment(widget.cursorTextAlign),
+            child: Text(
+              '|',
+              style: widget.textStyle,
+              textAlign: widget.cursorTextAlign,
             ),
-          );
-        },
+          ),
+        ),
       );
     } else {
       return Container(

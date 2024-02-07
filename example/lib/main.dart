@@ -10,7 +10,7 @@ void main() {
 }
 
 class FlutterSingleCharacterInputDemo extends StatefulWidget {
-  const FlutterSingleCharacterInputDemo({Key? key}) : super(key: key);
+  const FlutterSingleCharacterInputDemo({super.key});
 
   @override
   State<FlutterSingleCharacterInputDemo> createState() =>
@@ -34,82 +34,78 @@ class _FlutterSingleCharacterInputDemoState
       };
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleCharacterInput(
-          characters: [
-            InputCharacter(
-              hint: '1',
-              keyboardType: const TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
+  Widget build(BuildContext context) => Scaffold(
+        body: Center(
+          child: SingleCharacterInput(
+            characters: [
+              InputCharacter(
+                hint: '1',
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                  decimal: true,
+                ),
+                formatter: _numberFormatter,
               ),
-              formatter: _numberFormatter,
-            ),
-            InputCharacter(
-              hint: '2',
-              keyboardType: const TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
+              InputCharacter(
+                hint: '2',
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                  decimal: true,
+                ),
+                formatter: _numberFormatter,
               ),
-              formatter: _numberFormatter,
-            ),
-            InputCharacter(
-              hint: '3',
-              keyboardType: const TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
+              InputCharacter(
+                hint: '3',
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                  decimal: true,
+                ),
+                formatter: _numberFormatter,
               ),
-              formatter: _numberFormatter,
-            ),
-            InputCharacter(
-              hint: '4',
-              keyboardType: const TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
+              InputCharacter(
+                hint: '4',
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                  decimal: true,
+                ),
+                formatter: _numberFormatter,
               ),
-              formatter: _numberFormatter,
-            ),
-            InputCharacter(
-              hint: 'A',
-              keyboardType: TextInputType.name,
-              formatter: _textFormatter,
-            ),
-            InputCharacter(
-              hint: 'B',
-              keyboardType: TextInputType.name,
-              formatter: _textFormatter,
-            ),
-          ],
-          textStyle: Theme.of(context).textTheme.headline1?.copyWith(
-                fontWeight: FontWeight.w400,
-                fontSize: 28,
+              InputCharacter(
+                hint: 'A',
+                keyboardType: TextInputType.name,
+                formatter: _textFormatter,
               ),
-          inputDecoration: InputDecoration(
-            hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+              InputCharacter(
+                hint: 'B',
+                keyboardType: TextInputType.name,
+                formatter: _textFormatter,
+              ),
+            ],
+            textStyle: Theme.of(context).textTheme.displayLarge?.copyWith(
                   fontWeight: FontWeight.w400,
-                  color: const Color(0xFFBBBBBB),
                   fontSize: 28,
                 ),
-            isDense: true,
-            isCollapsed: true,
-          ),
-          buildDecoration: (context, input) {
-            return Container(
+            inputDecoration: InputDecoration(
+              hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFFBBBBBB),
+                    fontSize: 28,
+                  ),
+              isDense: true,
+              isCollapsed: true,
+            ),
+            buildDecoration: (context, input) => Container(
               margin: const EdgeInsets.all(5),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 width: 32,
                 child: input,
               ),
-            );
-          },
-          onChanged: (value, finished) {
-            // setState(() {});
-          },
+            ),
+            onChanged: (value, finished) {
+              // setState(() {});
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

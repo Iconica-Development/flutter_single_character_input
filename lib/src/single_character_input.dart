@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_single_character_input/src/input_character.dart';
 
+/// A StatefulWidget that represents a single character input.
 class SingleCharacterInput extends StatefulWidget {
+  /// Creates a SingleCharacterInput widget.
   const SingleCharacterInput({
     required this.characters,
     required this.onChanged,
@@ -22,6 +24,8 @@ class SingleCharacterInput extends StatefulWidget {
     super.key,
   });
 
+  /// A function that builds a custom input widget using
+  /// the provided context and input widgets.
   final Widget Function(BuildContext context, List<Widget> inputs)?
       buildCustomInput;
 
@@ -33,14 +37,22 @@ class SingleCharacterInput extends StatefulWidget {
   // ignore: avoid_positional_boolean_parameters
   final void Function(String value, bool isComplete) onChanged;
 
+  /// The decoration to be applied to the input widget.
   final InputDecoration? inputDecoration;
 
   /// List of all character fields which are used to create inputs.
   final List<InputCharacter> characters;
 
+  /// The alignment of the input text.
   final TextAlign textAlign;
+
+  /// The alignment of the cursor.
   final TextAlign cursorTextAlign;
+
+  /// The spacing between input fields.
   final double spacing;
+
+  /// The style of the input text.
   final TextStyle? textStyle;
 
   @override
